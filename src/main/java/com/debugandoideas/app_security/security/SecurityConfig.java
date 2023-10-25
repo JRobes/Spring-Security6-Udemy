@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -22,10 +23,11 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/loans", "/balance", "/accounts","/cards").authenticated().anyRequest().permitAll())
-                        .formLogin(Customizer.withDefaults())
-                        .httpBasic(Customizer.withDefaults()
+        http.authorizeHttpRequests(auth -> /// "/loans/**"  hace que todos los endpoints encima de loans estan protegidos
+                        auth.requestMatchers("/loans", "/balance", "/accounts","/cards").authenticated()//Estos enpoints estan protegidos
+                        .anyRequest().permitAll()) //anyRequest().permitAll() lo demas endpoinnts estan para libres
+                        .formLogin(Customizer.withDefaults()) //la pagina web que sa     git cole por defecto
+                        .httpBasic(Customizer.withDefaults()  //Lo basico de autentificacion, user pwd
 
                 );
        //CONFIGURACION QUE HABRIA POR DEFECTO. ES COMO QUEDA SI NO SE PONE NADA
@@ -57,14 +59,27 @@ public class SecurityConfig {
     }
 */
 
-   @Autowired//NO es necesario
+/*
+   //Esta es otra de las implementaciones de UserDetailService
+
+    @Autowired//NO es necesario
    @Bean
    UserDetailsService userDetailsService(DataSource dataSource){
-        return new  JdbcUserDetailsManager(dataSource);
-    }
 
+       return new  JdbcUserDetailsManager(dataSource);
+    }
+*/
+
+/*
+//Se crea nuestro propio password encoder (MyPasswordEncoder)
     @Bean
     PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
+    }
+    */
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }
