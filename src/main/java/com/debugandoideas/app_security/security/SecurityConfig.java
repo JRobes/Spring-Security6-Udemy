@@ -70,16 +70,18 @@ public class SecurityConfig {
     }
 */
 
-/*
+
 //Se crea nuestro propio password encoder (MyPasswordEncoder)
     @Bean
     PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
-    */
 
+/*
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+    */
+
 }
