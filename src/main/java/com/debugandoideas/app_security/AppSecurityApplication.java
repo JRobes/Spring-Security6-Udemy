@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-@EnableWebSecurity //No es necesaria en versiones posteriores
+@EnableWebSecurity(debug = true) //No es necesaria en versiones posteriores, pero si pongo debug = true sale otda la info (headers, filters...) en el terminal
 public class AppSecurityApplication /*implements CommandLineRunner*/ {
 
 	//@Autowired
