@@ -3,9 +3,12 @@ package com.debugandoideas.app_security.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,13 +35,17 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.addFilterBefore(new ApiKeyFilter(), BasicAuthenticationFilter.class);
+        //Se ha borraoo el ApiKeyFilter.java y se borra este linea donde se implemta
+        // Esto se hace en la seccion 8 JWT
+        //http.addFilterBefore(new ApiKeyFilter(), BasicAuthenticationFilter.class);
 
         //CSRF
         //var requestHandler = new CsrfTokenRequestAttributeHandler();
         //requestHandler.setCsrfRequestAttributeName("_csrf");
 
+
+        //ESTO PARA EL JWT
+        http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> /// "/loans/**"  hace que todos los endpoints encima de loans estan protegidos
                         //auth.requestMatchers("/loans", "/balance", "/accounts","/cards").authenticated()//Estos enpoints estan protegidos
@@ -51,7 +58,7 @@ public class SecurityConfig {
                                 .requestMatchers("/loans", "/balance").hasRole("USER")
                                 //.requestMatchers("/balance").hasRole("USER")
                                 //.requestMatchers("/cards").hasRole("ADMIN")
-                                .requestMatchers("/accounts", "/cards").hasRole("ADMIN")
+                                .requestMatchers("/accounts", "/cards", "/authenticate").hasRole("ADMIN")
 
                                 .anyRequest().permitAll()) //anyRequest().permitAll() lo demas endpoinnts estan para libres
                                 .formLogin(Customizer.withDefaults()) //la pagina web que sa     git cole por defecto
@@ -138,6 +145,11 @@ public class SecurityConfig {
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }
 
