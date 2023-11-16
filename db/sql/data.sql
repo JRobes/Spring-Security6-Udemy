@@ -10,10 +10,10 @@
 
 -----------------data------------------
 insert into customers (email, pwd) VALUES
-  ('account@debuggeandoieas.com', 'to_be_encoded'),
-  ('cards@debuggeandoieas.com', 'to_be_encoded'),
-  ('loans@debuggeandoieas.com', 'to_be_encoded'),
-  ('balance@debuggeandoieas.com', 'to_be_encoded');
+  ('account@debuggeandoieas.com', '$2a$10$S.XrR6nW54su0N2l3xmj2eGc2ZQEu4H1dAaNyVJ15r05eOvg7nkz2'),
+  ('cards@debuggeandoieas.com', '$2a$10$S.XrR6nW54su0N2l3xmj2eGc2ZQEu4H1dAaNyVJ15r05eOvg7nkz2'),
+  ('loans@debuggeandoieas.com', '$2a$10$S.XrR6nW54su0N2l3xmj2eGc2ZQEu4H1dAaNyVJ15r05eOvg7nkz2'),
+  ('balance@debuggeandoieas.com', '$2a$10$S.XrR6nW54su0N2l3xmj2eGc2ZQEu4H1dAaNyVJ15r05eOvg7nkz2');
 
 insert into roles(role_name, description, id_customer) values
             ('ROLE_ADMIN', 'cant view account endpoint', 1),
@@ -33,7 +33,7 @@ insert into partners(
 )
 values ('debuggeandoideas',
             'debuggeando ideas',
-            'secret',
+            '$2a$10$fwC9OvcPSsOKhvXSzbngne3/nzlDFT6ep66hUEcrE6aN8j0tAuxai', -- secret --
             'read,write',
             'authorization_code,refresh_token',
             'client_secret_basic,client_secret_jwt',
