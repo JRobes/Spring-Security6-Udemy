@@ -34,7 +34,6 @@ import org.springframework.security.web.PortResolverImpl;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -92,21 +91,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter(){
-        var converter = new JwtGrantedAuthoritiesConverter();
-        converter.setAuthorityPrefix("");
-        return converter;
-    }
-
-
-    @Bean
-    JwtAuthenticationConverter jwtAuthenticationConverter(JwtGrantedAuthoritiesConverter settings){
+    JwtAuthenticationConverter jwtAuthenticationConverter(){
         var authConverter = new JwtGrantedAuthoritiesConverter();
-        authConverter.setAuthoritiesClaimName("ROLES");
+        authConverter.setAuthoritiesClaimName("roles");
         authConverter.setAuthorityPrefix("");
         var converterResponse = new JwtAuthenticationConverter();
         converterResponse.setJwtGrantedAuthoritiesConverter(authConverter);
-        converterResponse.setJwtGrantedAuthoritiesConverter(settings);
         return converterResponse;
     }
 
